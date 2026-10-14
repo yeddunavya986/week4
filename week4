@@ -1,0 +1,218 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": []
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "9Qbmvq_s6CiO",
+        "outputId": "f73f0247-3e3d-4a7a-d44c-6b254c792850"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\u001b[?25l   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m0.0/143.7 kB\u001b[0m \u001b[31m?\u001b[0m eta \u001b[36m-:--:--\u001b[0m\r\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m143.7/143.7 kB\u001b[0m \u001b[31m6.6 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25h"
+          ]
+        }
+      ],
+      "source": [
+        "!pip install groq transformers -q"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from google.colab import userdata\n",
+        "from groq import Groq\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "zJM1717a6Rya"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "api_key = userdata.get(\"GROQ_API_KEY\")\n",
+        "client = Groq(api_key=api_key)\n"
+      ],
+      "metadata": {
+        "id": "mvI3B5A766Wo"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# ---------------------------------------\n",
+        "# Prompt 1 - Vague Prompt\n",
+        "# ---------------------------------------\n",
+        "\n",
+        "vague_prompt = \"Tell me about Java.\"\n",
+        "\n",
+        "response1 = client.chat.completions.create(\n",
+        "    model=\"llama-3.3-70b-versatile\",\n",
+        "    messages=[\n",
+        "        {\"role\": \"user\", \"content\": vague_prompt}\n",
+        "    ]\n",
+        ")\n",
+        "\n",
+        "# ---------------------------------------\n",
+        "# Prompt 2 - Improved Prompt\n",
+        "# ---------------------------------------\n",
+        "\n",
+        "improved_prompt = \"\"\"\n",
+        "You are a computer science teacher.\n",
+        "\n",
+        "Explain the Java programming language.\n",
+        "\n",
+        "Include:\n",
+        "1. Definition\n",
+        "2. Features\n",
+        "3. Applications\n",
+        "\n",
+        "Use simple English.\n",
+        "Write the answer in 5 bullet points.\n",
+        "\"\"\"\n",
+        "\n",
+        "response2 = client.chat.completions.create(\n",
+        "    model=\"llama-3.3-70b-versatile\",\n",
+        "    messages=[\n",
+        "        {\"role\": \"user\", \"content\": improved_prompt}\n",
+        "    ]\n",
+        ")\n",
+        "\n",
+        "# ---------------------------------------\n",
+        "# Display Results\n",
+        "# ---------------------------------------\n",
+        "\n",
+        "print(\"========== Vague Prompt ==========\\n\")\n",
+        "print(vague_prompt)\n",
+        "\n",
+        "print(\"\\nOutput:\\n\")\n",
+        "print(response1.choices[0].message.content)\n",
+        "\n",
+        "print(\"\\n\\n========== Improved Prompt ==========\\n\")\n",
+        "print(improved_prompt)\n",
+        "\n",
+        "print(\"\\nOutput:\\n\")\n",
+        "print(response2.choices[0].message.content)\n"
+      ],
+      "metadata": {
+        "id": "EeOrxQh27CB3",
+        "outputId": "5aa89299-629a-4d8c-8847-30e4f76f899d",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "========== Vague Prompt ==========\n",
+            "\n",
+            "Tell me about Java.\n",
+            "\n",
+            "Output:\n",
+            "\n",
+            "**Introduction to Java**\n",
+            "========================\n",
+            "\n",
+            "Java is a high-level, object-oriented programming language developed by Sun Microsystems (now owned by Oracle Corporation). It was first released in 1995 and has since become one of the most popular programming languages in the world.\n",
+            "\n",
+            "**Key Features of Java**\n",
+            "------------------------\n",
+            "\n",
+            "* **Platform Independence**: Java is known for its \"write once, run anywhere\" philosophy, which means that Java code can run on any device that has a Java Virtual Machine (JVM) installed, regardless of the underlying operating system.\n",
+            "* **Object-Oriented**: Java is an object-oriented language, which means it organizes code into objects that contain data and functions that operate on that data.\n",
+            "* **Simple and Familiar Syntax**: Java's syntax is based on C++ and is relatively simple and easy to learn.\n",
+            "* **Robust Security**: Java has a robust security system that includes memory management, data type checking, and secure class loading.\n",
+            "* **Large Community**: Java has a large and active community of developers, which means there are many resources available for learning and troubleshooting.\n",
+            "\n",
+            "**Common Use Cases for Java**\n",
+            "-----------------------------\n",
+            "\n",
+            "* **Android App Development**: Java is widely used for developing Android apps, as it is the primary language for Android development.\n",
+            "* **Web Development**: Java is used for developing web applications, especially those that require complex business logic and high-performance.\n",
+            "* **Enterprise Software**: Java is widely used in enterprise software development, especially for large-scale systems that require high reliability and scalability.\n",
+            "* **Machine Learning and Data Science**: Java is used in machine learning and data science applications, especially those that require high-performance and scalability.\n",
+            "\n",
+            "**Java Ecosystem**\n",
+            "-----------------\n",
+            "\n",
+            "* **Java Standard Edition (SE)**: This is the core Java platform, which includes the Java Runtime Environment (JRE) and the Java Development Kit (JDK).\n",
+            "* **Java Enterprise Edition (EE)**: This is an extended version of Java SE, which includes additional features and APIs for developing enterprise-level applications.\n",
+            "* **Java Micro Edition (ME)**: This is a subset of Java SE, which is designed for developing applications for small devices such as mobile phones and embedded systems.\n",
+            "\n",
+            "**Getting Started with Java**\n",
+            "-----------------------------\n",
+            "\n",
+            "To get started with Java, you will need to:\n",
+            "\n",
+            "1. **Install the Java Development Kit (JDK)**: This includes the Java compiler, runtime environment, and other development tools.\n",
+            "2. **Choose an Integrated Development Environment (IDE)**: Popular IDEs for Java include Eclipse, NetBeans, and IntelliJ IDEA.\n",
+            "3. **Learn the Basics of Java**: Start with basic tutorials and examples, and gradually move on to more advanced topics.\n",
+            "\n",
+            "**Resources for Learning Java**\n",
+            "-------------------------------\n",
+            "\n",
+            "* **Official Java Tutorials**: The official Java website provides extensive tutorials and guides for learning Java.\n",
+            "* **Udemy and Coursera Courses**: There are many online courses available for learning Java, including courses on Udemy and Coursera.\n",
+            "* **Java Books**: There are many books available for learning Java, including \"Head First Java\" and \"Java: A Beginner's Guide\".\n",
+            "\n",
+            "\n",
+            "========== Improved Prompt ==========\n",
+            "\n",
+            "\n",
+            "You are a computer science teacher.\n",
+            "\n",
+            "Explain the Java programming language.\n",
+            "\n",
+            "Include:\n",
+            "1. Definition\n",
+            "2. Features\n",
+            "3. Applications\n",
+            "\n",
+            "Use simple English.\n",
+            "Write the answer in 5 bullet points.\n",
+            "\n",
+            "\n",
+            "Output:\n",
+            "\n",
+            "Here's an explanation of the Java programming language:\n",
+            "\n",
+            "* **Definition**: Java is a computer programming language that lets us create instructions that a computer can understand. It's like a set of rules that tells the computer what to do. Java was created to make it easy to write programs that can run on many different types of computers.\n",
+            "* **Features**: Java has many useful features, such as being \"object-oriented\", which means it organizes code into small, reusable pieces called \"objects\". Java is also a \"platform-independent\" language, which means that programs written in Java can run on many different types of computers, like Windows, Mac, or Linux.\n",
+            "* **Key Aspect**: Java is a \"high-level\" language, which means it's easy for humans to read and write, and it's not too close to the computer's native language, called \"machine code\". This makes Java a popular choice for many programmers.\n",
+            "* **Applications**: Java is used in many real-world applications, such as creating games, mobile apps, and web applications. For example, many Android apps are written in Java, and popular websites like Amazon and Google use Java to power their services.\n",
+            "* **Uses**: Java is also used in other areas, such as creating desktop applications, like media players and IDEs (Integrated Development Environments), and even in enterprise software, like banking and financial systems, due to its strong security features and ability to handle large amounts of data.\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
